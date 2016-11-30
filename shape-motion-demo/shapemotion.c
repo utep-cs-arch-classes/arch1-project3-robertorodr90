@@ -18,24 +18,128 @@
 
 
 AbRect rect10 = {abRectGetBounds, abRectCheck, {10,10}}; /**< 10x10 rectangle */
-AbRArrow rightArrow = {abRArrowGetBounds, abRArrowCheck, 30};
+AbRect bar = {abRectGetBounds, abRectCheck, {10,2}};
+AbRArrow rightArrow = {abRArrowGetBounds, abRArrowCheck, 10};
 
 AbRectOutline fieldOutline = {	/* playing field */
   abRectOutlineGetBounds, abRectOutlineCheck,   
-  {screenWidth/2 - 10, screenHeight/2 - 10}
+  {screenWidth/2 - 1, screenHeight/2 - 10}
+};
+
+
+Layer layer15 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2)+50, (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+};
+
+Layer layer14 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2)+40, (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+  &layer15,
+};
+
+Layer layer13 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2)+30, (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+  &layer14,
+};
+
+Layer layer12 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2)+20, (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+  &layer13,
+};
+
+Layer layer11 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2)+10, (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+  &layer12,
+};
+
+Layer layer10 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2), (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+  &layer11,
+};
+
+
+
+
+Layer layer9 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2)-10, (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+  &layer10,
+};
+
+
+Layer layer8 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2)-20, (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+  &layer9
+};
+
+Layer layer7 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2)-30, (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+  &layer8,
+};
+
+
+Layer layer6 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2)-40, (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+  &layer7,
+};
+
+Layer layer5 = {
+  (AbShape *)&circle5,
+  {(screenWidth/2)-50, (screenHeight/2)-60}, /**< bit below & right of center */
+  {0,0}, {0,0},				    /* last & next pos */
+  COLOR_GREEN,
+  &layer6,
 };
 
 Layer layer4 = {
-  (AbShape *)&rightArrow,
-  {(screenWidth/2)+10, (screenHeight/2)+5}, /**< bit below & right of center */
+  (AbShape *)&bar,
+  {(screenWidth/2)+10, (screenHeight/2)+68}, /**< bit below & right of center */
   {0,0}, {0,0},				    /* last & next pos */
-  COLOR_PINK,
-  0
+  COLOR_RED,
+  &layer5,
+  //&fieldLayer,
 };
+
+
+//Layer layer4 = {
+//  (AbShape *)&rightArrow,
+//  {(screenWidth/2)+10, (screenHeight/2)+64}, /**< bit below & right of center */
+//  {0,0}, {0,0},				    /* last & next pos */
+//  COLOR_RED,
+//  0
+//};
   
 
 Layer layer3 = {		/**< Layer with an orange circle */
-  (AbShape *)&circle8,
+  (AbShape *)&circle4,
   {(screenWidth/2)+10, (screenHeight/2)+5}, /**< bit below & right of center */
   {0,0}, {0,0},				    /* last & next pos */
   COLOR_VIOLET,
@@ -51,16 +155,17 @@ Layer fieldLayer = {		/* playing field as a layer */
   &layer3
 };
 
+
 Layer layer1 = {		/**< Layer with a red square */
-  (AbShape *)&rect10,
-  {screenWidth/2, screenHeight/2}, /**< center */
+  (AbShape *)&circle6,
+  {screenWidth/2, (screenHeight/2)+10}, /**< center */
   {0,0}, {0,0},				    /* last & next pos */
   COLOR_RED,
   &fieldLayer,
 };
 
 Layer layer0 = {		/**< Layer with an orange circle */
-  (AbShape *)&circle14,
+  (AbShape *)&circle3,
   {(screenWidth/2)+10, (screenHeight/2)+5}, /**< bit below & right of center */
   {0,0}, {0,0},				    /* last & next pos */
   COLOR_ORANGE,
@@ -154,7 +259,7 @@ void mlAdvance(MovLayer *ml, Region *fence)
 }
 
 
-u_int bgColor = COLOR_BLUE;     /**< The background color */
+u_int bgColor = COLOR_BLACK;     /**< The background color */
 int redrawScreen = 1;           /**< Boolean for whether screen needs to be redrawn */
 
 Region fieldFence;		/**< fence around playing field  */
@@ -170,8 +275,15 @@ void main()
 
   configureClocks();
   lcd_init();
+
+
+
+
+
+  
   shapeInit();
   p2sw_init(1);
+
 
   shapeInit();
 
@@ -180,7 +292,17 @@ void main()
 
 
   layerGetBounds(&fieldLayer, &fieldFence);
+  u_char width = screenWidth, height = screenHeight;
 
+  //clearScreen(COLOR_BLACK);
+
+  
+
+  fillRectangle(0,0, 130, 10, COLOR_RED);
+  //fillRectangle(145,210, 10, 5, COLOR_YELLOW);
+  drawString5x7(5,2, "SCORE            0", COLOR_WHITE, COLOR_RED);
+  
+  fillRectangle(0,151, 130, 9, COLOR_BLUE);
 
   enableWDTInterrupts();      /**< enable periodic interrupt */
   or_sr(0x8);	              /**< GIE (enable interrupts) */
